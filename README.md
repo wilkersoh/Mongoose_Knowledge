@@ -6,7 +6,7 @@
 * 删除数据 D - Deleted - delete
 
 ``` javascript
-const validator = require('validator) // 蛮好用哦
+const validator = require('validator') //蛮好用的
 ```
 
 <p>每个数据都会通过mongodb 自动create出一个独有的_id</p>
@@ -49,7 +49,7 @@ const personSchema = new Schema({
       trim: true,
       validate(value){
         if(!validator.isEmail(value)){ //通过validator 去验证这些资料
-           alert('Provide a valid email")
+           alert('Provide a valid email')
         }
       }
     }
