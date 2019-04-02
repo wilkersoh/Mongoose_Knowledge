@@ -97,6 +97,22 @@ router.delete('/contact/:id', (req, res, next)=>{
           res.send(yz)
       })
 })
+
+module.exports = router; //去 主要index.js，它调用这个
+
+```
+
+``` javascript
+//index.js
+
+// 连接 /yzdb folder 会自动创建 如果没有的话
+// 'mongodb://127.0.0.1:27017/yzdb',{....};
+mongoose.connect('mongodb://localhost/yzdb', { useNewUrlParser: true, useCreateIndex: true,});
+// const router = require('./router/api')
+app.use('/api', require('./router/api'));
+```
+
+--------------------------------
 ```
 
 
@@ -138,6 +154,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
 ```
 
 -------
+
 ##### findOne （寻找一个）
 ``` javascript
 
@@ -155,20 +172,6 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
   
 })  
 
-module.exports = router; //去 主要index.js，它调用这个
-```
-
-``` javascript
-//index.js
-
-// 连接 /yzdb folder 会自动创建 如果没有的话
-mongoose.connect('mongodb://localhost/yzdb', { useNewUrlParser: true});
-// const router = require('./router/api')
-app.use('/api', require('./router/api'));
-```
-
---------------------------------
-```
 
 ##### 注意 使用find 他是返回 cursor 而不是 array (寻找多个)
 ``` javascript
