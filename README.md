@@ -56,6 +56,7 @@ const personSchema = new Schema({
 })
 
 ### 做完Schema后，就需要使用他来创建模型了
+
 ``` javascript
 const Yz = mongoose.model('CreateName', personSchema); //（如果没有这个名字它会自动在你database里创建，Schema）
  
