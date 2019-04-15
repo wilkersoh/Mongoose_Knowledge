@@ -104,11 +104,15 @@ module.exports = router; //去 主要index.js，它调用这个
 ```
 
 ``` javascript
-//index.js
+//app.js 在执行 连接server的地方，那样的话 就会跑server 这个也一起读到了
 
 // 连接 /yzdb folder 会自动创建 如果没有的话
 // 'mongodb://127.0.0.1:27017/yzdb',{....};
-mongoose.connect('mongodb://localhost/yzdb', { useNewUrlParser: true, useCreateIndex: true,});
+// const db = require('./url/your mongoose key')
+// const mongoose.connect(db, {...same below}); 这个比较推荐
+
+mongoose.connect('mongodb://localhost/yzdb', { useNewUrlParser: true, useCreateIndex: true});
+
 // const router = require('./router/api')
 app.use('/api', require('./router/api'));
 ```
