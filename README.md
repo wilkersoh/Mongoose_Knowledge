@@ -18,7 +18,11 @@ let instance = new Car({
 })
 ```
 <p>如果想要拿到Car的model资料</p>
+
+``` javascript
 console.log(`${instance.model.brand} and ${instance.model.color}`); // toyota and blue
+```
+
 <p>Virtual能够帮助我们虚拟化它，他是它不存在database里</p>
 
 ``` javascript
