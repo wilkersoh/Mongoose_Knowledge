@@ -1,9 +1,17 @@
 # Note-Mongo
+## Branch method 
+* mongoose.virtual 
+
+
 ### 想想下 数据 会有什么功能呢
 * 添加数据 C - Create - get
 * 读取数据 R - Read - get
 * 更改数据 U - Update - put
 * 删除数据 D - Deleted - delete
+
+<p>1. 创建Schema</p>   -- const schemaName = new mongoose.Schema({})
+<p>2. 转成model</p>    -- const Model = mongoose.model('dbName', schemaName)
+<p>3. 做成实例</p>     -- const instance = new Model({})
 
 ``` javascript
 const validator = require('validator') //蛮好用的
