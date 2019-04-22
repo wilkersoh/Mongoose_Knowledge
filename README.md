@@ -1,7 +1,8 @@
-
-## Branch method 
-* mongoose.virtual 
-
+``` bash
+----------master ------- CRUD
+     |----method ------- virtual
+     |----middleware --- pre
+```
 
 ### 想想下 数据 会有什么功能呢
 * 添加数据 C - Create - get
@@ -99,6 +100,7 @@ router.put('/contact/:id', (req, res, next)=>{
 })
 ```
 * Delete
+
 ``` javascript
 router.delete('/contact/:id', (req, res, next)=>{
     Yz.findOneAndDelete({_id: req.params.id})
