@@ -1,6 +1,5 @@
-## Branch master CRUD
 
-### monngose.Method
+### Schema.Method
 * virtual
 
 ``` javascript
