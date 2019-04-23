@@ -1,8 +1,8 @@
 ``` bash
-----------master ---------- CRUD
-     |----method ---------- virtual
-     |----middleware ------ pre || post
-     |----Model.method ---- update || delete
+----------master ------------ CRUD
+     |----Schema.method ----- virtual
+     |----middleware -------- pre || post
+     |----Model.method ------ update || delete
 ```
 
 ### 想想下 数据 会有什么功能呢
