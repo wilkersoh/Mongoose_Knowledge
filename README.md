@@ -38,6 +38,8 @@ Car.remove()
 <b>它有前后执行顺序，如果中间件和pre，post都设置的话</b>
 <p>如果数据库里有3条数据了,执行find而且中间件pre，post都设置,运行find后，它会执行</p>
 
+#### 一定要next()，没有的话它会一直卡这那边
+
 ``` javascript
 carSchema.pre('find', function(next){
   console.log('find');
