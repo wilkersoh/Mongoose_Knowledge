@@ -9,6 +9,7 @@ const iamModel = require('dbUrl');
 * findByIdAndRemove | (id, options, callback)         | if one parameter return Promise 
 * findByIdAndUpdate | (id, update, options, callback) | opts- new: true 返回更新的资料而不是旧的
 * find              | (condition, projection,opts, cb)| 找全部documents
+* findByCredentials | (email, password)
 
 
 #### Option
