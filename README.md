@@ -7,9 +7,14 @@ const iamModel = require('dbUrl');
 <p>以下要写1个还是4个parameter是看个人，每个做法都不一样，cb就是直接执行了</p>
 
 * findByIdAndRemove | (id, options, callback)         | if one parameter return Promise 
-* findByIdAndUpdate | (id, update, options, callback) |
+* findByIdAndUpdate | (id, update, options, callback) | opts- new: true 返回更新的资料而不是旧的
 * find              | (condition, projection,opts, cb)| 找全部documents
 
+
+#### Option
+<p>findByIdAndUpdate</p>
+1. new: true 返回更新的资料而不是旧的  default:false
+2. runValidators: true update it before run validation
 
 ``` javascript
 // findByIdAndRemove
