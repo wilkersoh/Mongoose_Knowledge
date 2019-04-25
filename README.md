@@ -51,7 +51,8 @@ Yz.find({}).then(function(yzs){
  ```
 
 ##### 创建method类似js prototype
-* Schema.statics.methodName
+* Schema.statics.methodName ----这个是for Model方法
+* Schema.methods.methodName ----这个是for Instance方法
 
 ``` javascript
 await user.findByCredentials();
