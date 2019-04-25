@@ -6,19 +6,21 @@ const iamModel = require('dbUrl');
 <p>iamModel就是model，还没生成去 instance！</p>
 <p>以下要写1个还是4个parameter是看个人，每个做法都不一样，cb就是直接执行了</p>
 
-* findByIdAndRemove | (id, options, callback)         | if one parameter return Promise 
-* findByIdAndUpdate | (id, update, options, callback) | opts- new: true 返回更新的资料而不是旧的
-* find              | (condition, projection,opts, cb)| 找全部documents
-* findByCredentials | (email, password)
+##### findByIdAndRemove | (id, options, callback)         | if one parameter return Promise 
+##### findByIdAndUpdate | (id, update, options, callback) | opts- new: true 返回更新的资料而不是旧的
+##### find              | (condition, projection,opts, cb)| 找全部documents
+##### findByCredentials | (email, password)
+##### 创建method类似js prototype
 
 
 #### Option
-<p>findByIdAndUpdate</p>
+##### findByIdAndRemove
 1. new: true 返回更新的资料而不是旧的  default:false
 2. runValidators: true update it before run validation
 
+##### findByIdAndRemove
+
 ``` javascript
-// findByIdAndRemove
 router.delete('/yz/:id', (req, res) => {
     Yz.findByIdAndRemove({_id: req.params.id})
       .then(function(yz){
@@ -48,6 +50,16 @@ Yz.find({}).then(function(yzs){
         res.send(yzs);
  ```
 
+##### 创建method类似js prototype
+* Schema.statics.methodName
 
+``` javascript
+await user.findByCredentials();
+```
+<p>创建了findByCredentials 方法</p>
 
+``` javascript
+//db schema file
+Schema.statics.findByCredentials = async (email, password) => {}
+```
 
