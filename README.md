@@ -60,14 +60,6 @@ Yz.find({}).then(function(yzs){
 Model.findOne( { "instock.qty": 5, "instock.warehouse": "A" } )
 ```
 
-##### findByCredentials
-* | (email, password)
-<p>创建了findByCredentials 方法</p>
-
-``` javascript
-//db schema file
-Schema.statics.findByCredentials = async (email, password) => {}
-```
 
 ------------------
 
