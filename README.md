@@ -6,6 +6,10 @@
      |----CRUD --------------  Model.method
 ```
 
+* Schema概念
+* Model概念
+* 连接数据库
+
 ### 想想下 数据 会有什么功能呢
 * 添加数据 C - Create - get
 * 读取数据 R - Read - get
@@ -17,22 +21,48 @@
 <p>3. 做成实例</p>     -- const instance = new Model({})
 
 ``` javascript
+//mongoose.js
+const Schema = mongoose.Schema;
+```
+<p>使用保密的行为</p>
+
+``` javascript
+// 用 process secure的话需要 dotenv插件， 然后在.env 里储存token
+if(process.env.NODE_ENV !== 'production'){
+     require('dotenv').config()
+}
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.DATABASE_URL, {useNew...})
+ .then(xx => console.log("success connected"));
+
+// .env
+DATABASE_URL=xxxxxx
+```
+<p>这样也是没问题得~</p>
+
+``` javascript
+//app.js 在执行 连接server的地方，那样的话 就会跑server 这个也一起读到了
+
+// 连接 /yzdb folder 会自动创建 如果没有的话
+// 'mongodb://127.0.0.1:27017/yzdb',{....};
+// const db = require('./url/your mongoose key')
+// const mongoose.connect(db, {...same below}); 也行
+
+mongoose.connect('mongodb://localhost/yzdb', { useNewUrlParser: true, useCreateIndex: true});
+
+// const router = require('./router/api')
+app.use('/api', require('./router/api'));
+```
+
+``` javascript
 const validator = require('validator') //蛮好用的
 ```
 
 <p>每个数据都会通过mongodb 自动create出一个独有的_id</p>
 <p>use Robo 3T查看数据</p>
 
-### 我也不清楚为什么大家都是用 Mongoose 而不是 Mongodb模块
-Mongoose应该比较容易实现一些资料吧
-
 --------
-
-``` javascript
-//mongoose.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-```
 
 ##### 记得要创建 Schema 样板 数据都是跟着它的规定执行
 ``` javascript
@@ -90,12 +120,13 @@ const ObjectID = mongodb.ObjectID;
 
 ````
 ### destructor it 
-```javascript
+
+``` javascript
 const { MongoClient, ObjectID } = require('mongodb');
 const id = new ObjectID()
 ```
+完整长这样
 
-*完整长这样
 ``` javascript 
 const { MongoClient, ObjectID } = require('mongodb');
 
@@ -107,7 +138,8 @@ const id  = new ObjectID();
 
 ```
 ### mongodb大多都有callback
-*连接server 
+连接server
+
 ``` javascript
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
 
@@ -120,8 +152,8 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
 -------
 
 ##### findOne （寻找一个）
-``` javascript
 
+``` javascript
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
     if(err){
         console.log('Unable to connect the database!')
@@ -148,6 +180,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
  * $set 更改value
  * $inc 增加 1 如下
  <p>还有一些可以在网路上找来看</p>
+ 
  ``` javascript 
      const updatePromise = db.collection('users').updateOne({
         _id: new ObjectID('5c9ca463d88e00040089d387')
