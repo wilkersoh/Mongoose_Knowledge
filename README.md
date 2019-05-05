@@ -6,10 +6,11 @@ const iamModel = require('dbUrl');
 <p>iamModel就是model，还没生成去 instance！</p>
 <p>以下要写1个还是4个parameter是看个人，每个做法都不一样，cb就是直接执行了</p>
 
-##### findByIdAndRemove | (id, options, callback)         | if one parameter return Promise 
-##### findByIdAndUpdate
-##### find          
-##### findOne
+* findByIdAndRemove | (id, options, callback)    | if one parameter return Promise 
+* findByIdAndUpdate
+* find          
+* findOne
+* populate 牵连到ObjectId, ref | 为了返回两个Schema的数据
 
 
 ##### findByIdAndRemove
@@ -62,6 +63,35 @@ Model.findOne( { "instock.qty": 5, "instock.warehouse": "A" } )
 
 
 ------------------
+
+##### populate
+<p>关于当这个Schema的某个obj的_id是指向另一个Schema里的_id时候，你要获取当前的Schema资料和指向另一个Schema的资料</p>
+<p>什么能让Schema的_id是指向另外一个Schema的_id呢？</p>
+<p>就是使用 type: Schema.ObjectId, ref: 'theSchema'啊</p>
+
+``` javascript
+// Schema.ObjectId || ref: 'otherSchemaName'
+const bookSchema = new mongoose.Schema({
+  author:{
+    // 这是只要这个author 会生成一个id 但是这个id 是指向另一个Schema的_id
+    // ref 是ObjectId指向哪里，所以他们连个是一起出现的
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'populateMethod'
+  }
+})
+```
+
+``` javascript
+const populateMethod = new mongoose.Schema({
+  name:{type: String},
+  pwd: String,
+})
+```
+<p>如果要找到当前和某个Schema里资料</p>
+
+``` javascript
+bookSchema.findById(req.params.id).populate('author').exec()
+```
 
 
 
