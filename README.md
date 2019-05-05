@@ -1,170 +1,121 @@
-``` bash
-----------master ------------ CRUD
-     |----method ------------ Schema.virtual
-     |----middleware -------- pre || post
-     |----Model.method ------ update || delete
-     |----CRUD --------------  Model.method
-```
+* .then method
+* async await method
 
-### 想想下 数据 会有什么功能呢
-* 添加数据 C - Create - get
-* 读取数据 R - Read - get
-* 更改数据 U - Update - put
-* 删除数据 D - Deleted - delete
-
-<p>1. 创建Schema</p>   -- const schemaName = new mongoose.Schema({})
-<p>2. 转成model</p>    -- const Model = mongoose.model('dbName', schemaName)
-<p>3. 做成实例</p>     -- const instance = new Model({})
-
+### 使用数据库
+* Create
 ``` javascript
-const validator = require('validator') //蛮好用的
-```
+//api.js 
+// Schema become model then module.exports to here
+const Yz = require('../models/mongoose')
 
-<p>每个数据都会通过mongodb 自动create出一个独有的_id</p>
-<p>use Robo 3T查看数据</p>
-
-### 我也不清楚为什么大家都是用 Mongoose 而不是 Mongodb模块
-Mongoose应该比较容易实现一些资料吧
-
---------
-
-``` javascript
-//mongoose.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-```
-
-##### 记得要创建 Schema 样板 数据都是跟着它的规定执行
-``` javascript
-const personSchema = new Schema({
-    type: {
-        type: String,
-        default: "Chinese" // 可以设置 default 来之mongoose
-    },
-    name: {
-       type: String,
-       required: true,
-       trim: true,
-    },
-    age: {
-       type: Number,
-       trim: true,
-       validate(value){ // 可以设置 validate 来之 mongoose
-        if(value < 0){
-          alert('Provide a valid number')
-         }
-       }
-    },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      validate(value){
-        if(!validator.isEmail(value)){ //通过validator 去验证这些资料
-           alert('Provide a valid email')
-        }
-      }
-    }
+router.post('/contact', (req, res, next)=>{
+    // let yz = new Yz(req.body);
+    // yz.save(); save at database after collection 
+    Yz.create(req.body)
+     .then((yz) => {
+        res.send(yz)
+     }).catch(next);
 })
 ```
-
-### 做完Schema后，就需要使用他来创建模型了
-
-``` javascript
-const Yz = mongoose.model('CreateName', personSchema); //（如果没有这个名字它会自动在你database里创建，Schema）
- 
-module.exports = Yz;
-```
-
---------------------------------
-
-
-
-
-### 连接mongodb基础设置 （Mongdb 版本）
-``` javascript
-
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
-const ObjectID = mongodb.ObjectID;
-
-````
-### destructor it 
-```javascript
-const { MongoClient, ObjectID } = require('mongodb');
-const id = new ObjectID()
-```
-
-*完整长这样
+* Update
 ``` javascript 
-const { MongoClient, ObjectID } = require('mongodb');
+router.put('/contact/:id', (req, res, next)=>{
+    Yz.findOneAndUpdate({_id: req.params.id}, req.body)
+      .then(() => {
+          Yz.findOne({_id: req.params.id}, req.body)
+            .then((yz) => 
+                res.send(yz)
+            );
+        })
+})
+```
+* Delete
 
+``` javascript
+router.delete('/contact/:id', (req, res, next)=>{
+    Yz.findOneAndDelete({_id: req.params.id})
+      .then(yz => {
+          res.send(yz)
+      })
+})
 
-const connectionURL = 'mongodb://127.0.0.1:27017';
-const databaseName = 'task-manager';
-
-const id  = new ObjectID();
+module.exports = router; //去 主要index.js，它调用这个
 
 ```
-### mongodb大多都有callback
-*连接server 
-``` javascript
-MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
 
-    const db = client.db(databaseName)
-    
-    do something ...
+------------------
+<p>Aysnc Await</p>
+<p>记得要用 try catch哦</p>
+<p>记得get的话，是拿到资料过后render去页面，而不是转跳redirect去页面</p>
+
+``` javascript
+router.post('/', async (req, res) => {
+  const book = new Book({
+    // title is from tag name
+    title: req.body.title
+  })
+  try {
+       const newBook = await book.save()
+       res.redirect('/somewhere')
+  } catch {
+      res.redirect('/somewhere')
+  }
+})
+
+router.delete('/:id', async (req, res) => {
+  const book = await book.findById(req.params.id);
+  try {
+       await book.remove()
+     res.redirect('/homepage')
+  } catch {
+     res.redirect('/somewhere')
+  }
+
 })
 ```
 
--------
+<p>如何更新资料呢？首先通过get的edit url资料然后才会put去更新啊</p>
 
-##### findOne （寻找一个）
+``` html
+<a href="/books/id/edit>Edit></a>
+```
+<p>其实他就是通过url来定义你的routes是做什么行为，就那么简单</p>
+<p>当点击进upated就是put</p>
+<p>记得get就是render啊，它拿到id了才知道是哪个对象过后在页面才能写那个对象的资料</p>
+
 ``` javascript
-
-MongoClient.connect(connectionURL, { useNewUrlParser: true }, (err, client) => {
-    if(err){
-        console.log('Unable to connect the database!')
+// 点击 edit button 他就是读哪里有这个path，找到这个就进来了
+router.get('/:id/edit', async (req, res) => {
+    try{
+        // 寻找url  .id的 
+        const author = await Author.findById(req.params.id);
+        res.render('authors/edit', {
+            author: author
+        })
+    } catch {
+        res.redirect('/authors')
     }
 
-    const db = client.db(databaseName)
-    
-    db.collection('users').findOne({_id: new ObjectID('5c9ca38544a3722c489b8719')}, (err, user) => {
-        if(err) throw err;
-        console.log(user);
-    })
+})
+
+// update
+router.put('/:id/edit', async (req, res) => {
+    let author;
+    try {
+        // 找url里的 id 在 database 
+        author = await Author.findById(req.params.id)
+        // form name里写的 资料 
+        author.name = req.body.name;
+        // 储存进database 更新了
+        await author.save()
+        res.redirect(`/authors/${author.id}`)
   
-})  
+    } catch {
+        // do something
+    }
+})
+```
 
 
-##### 注意 使用find 他是返回 cursor 而不是 array (寻找多个)
-``` javascript
-    db.collection('users').find({age: 23}).toArray((err, users) => {
-        console.log(users);
-    })
- ``` 
- 
- #### Update Operate 使用在update数据身上
- * $set 更改value
- * $inc 增加 1 如下
- <p>还有一些可以在网路上找来看</p>
- ``` javascript 
-     const updatePromise = db.collection('users').updateOne({
-        _id: new ObjectID('5c9ca463d88e00040089d387')
-    },{
-        $inc: {
-            age: 1
-        }
-    })
-
-    updatePromise.then((result) => {
-        console.log(result);
-    }).catch((err) => {
-        console.log(err)
-    })
-   ```
-
-
-    
 
 
