@@ -1,8 +1,9 @@
 ``` bash
 ----------master ------------ CRUD
-     |----Schema.method ----- virtual
+     |----method ------------ Schema.virtual
      |----middleware -------- pre || post
      |----Model.method ------ update || delete
+     |----CRUD --------------  Model.method
 ```
 
 ### 想想下 数据 会有什么功能呢
@@ -23,7 +24,7 @@ const validator = require('validator') //蛮好用的
 <p>use Robo 3T查看数据</p>
 
 ### 我也不清楚为什么大家都是用 Mongoose 而不是 Mongodb模块
-*Mongoose应该比较容易实现一些资料吧
+Mongoose应该比较容易实现一些资料吧
 
 --------
 
@@ -32,6 +33,7 @@ const validator = require('validator') //蛮好用的
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 ```
+
 ##### 记得要创建 Schema 样板 数据都是跟着它的规定执行
 ``` javascript
 const personSchema = new Schema({
@@ -73,63 +75,9 @@ const Yz = mongoose.model('CreateName', personSchema); //（如果没有这个�
  
 module.exports = Yz;
 ```
-### 使用数据库
-* Create
-``` javascript
-//api.js 
-const Yz = require('../models/mongoose')
-
-router.post('/contact', (req, res, next)=>{
-    // let yz = new Yz(req.body);
-    // yz.save(); save at database after collection 
-    Yz.create(req.body)
-     .then((yz) => {
-        res.send(yz)
-     }).catch(next);
-})
-```
-* Update
-``` javascript 
-router.put('/contact/:id', (req, res, next)=>{
-    Yz.findOneAndUpdate({_id: req.params.id}, req.body)
-      .then(() => {
-          Yz.findOne({_id: req.params.id}, req.body)
-            .then((yz) => 
-                res.send(yz)
-            );
-        })
-})
-```
-* Delete
-
-``` javascript
-router.delete('/contact/:id', (req, res, next)=>{
-    Yz.findOneAndDelete({_id: req.params.id})
-      .then(yz => {
-          res.send(yz)
-      })
-})
-
-module.exports = router; //去 主要index.js，它调用这个
-
-```
-
-``` javascript
-//app.js 在执行 连接server的地方，那样的话 就会跑server 这个也一起读到了
-
-// 连接 /yzdb folder 会自动创建 如果没有的话
-// 'mongodb://127.0.0.1:27017/yzdb',{....};
-// const db = require('./url/your mongoose key')
-// const mongoose.connect(db, {...same below}); 这个比较推荐
-
-mongoose.connect('mongodb://localhost/yzdb', { useNewUrlParser: true, useCreateIndex: true});
-
-// const router = require('./router/api')
-app.use('/api', require('./router/api'));
-```
 
 --------------------------------
-```
+
 
 
 
