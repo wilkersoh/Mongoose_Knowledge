@@ -20,6 +20,10 @@
 <p>2. 转成model</p>    -- const Model = mongoose.model('dbName', schemaName)
 <p>3. 做成实例</p>     -- const instance = new Model({})
 
+#### 為什麼使用mongoose而不是mongoDB呢？
+<p>Mongoose是MongoDB的一个对象模型工具，是基于node-mongodb-native开发的MongoDB nodejs驱动，可以在异步的环境下执行。同时它也是针对MongoDB操作的一个对象模型库，封装了MongoDB对文档的的一些增删改查等常用方法，让NodeJS操作Mongodb数据库变得更加灵活简单</p>
+
+
 ``` javascript
 //mongoose.js
 const Schema = mongoose.Schema;
@@ -37,7 +41,7 @@ mongoose.connect(process.env.DATABASE_URL, {useNew...})
  .then(xx => console.log("success connected"));
 
 // .env
-DATABASE_URL=xxxxxx
+DATABASE_URL=mongodb://localhost/yzdb
 ```
 <p>这样也是没问题得~</p>
 
